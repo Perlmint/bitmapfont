@@ -1,0 +1,24 @@
+# build result
+build
+
+# node deps
+node_modules/
+
+# for windows
+/*.dll
+.gyp
+
+# for local dev
+/local_types
+/types
+
+# editor temp
+*~
+
+# typescript source
+/src/*.ts
+/tsconfig.json
+
+# npmignore itself
+.npmignore
+/*.tgz
