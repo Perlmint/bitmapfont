@@ -6,7 +6,8 @@
         "sourceMap": true,
         "strictNullChecks": true,
         "outDir": "lib",
-        "declaration": true
+        "declaration": true,
+        "baseUrl": "local_types"
     },
     "files": [
         "src/index.ts"

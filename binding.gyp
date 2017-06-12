@@ -22,21 +22,21 @@
     {
       "target_name": "bitmapfont",
       "sources": [
-		"src/addon.cc",
+        "src/addon.cc",
         "src/bitmapfont.cc",
-		"src/canvas.cc",
-		"include/bitmapfont.hpp",
-		"include/canvas.hpp",
-		"include/node_helper.h"
+        "src/canvas.cc",
+        "include/bitmapfont.hpp",
+        "include/canvas.hpp",
+        "include/node_helper.h"
       ],
-	  'defines': [
-		'NODE'
-	  ],
+      'defines': [
+        'NODE'
+      ],
       'cflags!': [ '-fno-exceptions' ],
       'cflags_cc!': [ '-fno-exceptions' ],
       "include_dirs" : [
         "<!(node -e \"require('nan')\")",
-		"include"
+        "include"
       ],
       "conditions": [
         ['OS=="win"', {
@@ -46,19 +46,7 @@
           ],
           'include_dirs': [
             '<(MAGICK_ROOT)/include',
-          ],
-		  'copies': [
-		    {
-			  'destination': '<(module_root_dir)',
-			  'files': [
-			    '<(MAGICK_ROOT)/CORE_RL_MagickCore_.dll',
-				'<(MAGICK_ROOT)/CORE_RL_MagickWand_.dll',
-				'<(MAGICK_ROOT)/CORE_RL_png_.dll',
-				'<(MAGICK_ROOT)/CORE_RL_ttf_.dll',
-				'<(MAGICK_ROOT)/CORE_RL_zlib_.dll'
-			  ]
-			}
-		  ]
+          ]
         }],
         ['OS=="win" and target_arch!="x64"', {
           'defines': [

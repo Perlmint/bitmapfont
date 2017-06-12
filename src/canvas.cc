@@ -82,7 +82,7 @@ Canvas::Canvas(uint32_t width, uint32_t height)
 	, wand(NewMagickWand())
 {
 	auto pixel = NewPixelWand();
-	PixelSetColor(pixel, "00000000");
+	PixelSetColor(pixel, "none");
 	MagickNewImage(wand, width, height, pixel);
 	DestroyPixelWand(pixel);
 }

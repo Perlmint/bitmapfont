@@ -8,7 +8,6 @@ namespace bf {
 	using v8::Object;
 
 	void InitAll(Local<Object> exports) {
-		MagickWandGenesis();
 		BitmapFont::Init(exports);
 		Canvas::Init(exports);
 	}

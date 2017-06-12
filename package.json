@@ -3,8 +3,8 @@
     "install": "node-gyp rebuild"
   },
   "dependencies": {
-    "@mapbox/shelf-pack": "^3.0.0",
-    "nan": "^2.6.2"
+    "nan": "^2.6.2",
+    "ts-node": "^3.0.6"
   },
   "scripts": {
     "install": "node-gyp build"
@@ -22,7 +22,9 @@
     "module_path": "build/Release"
   },
   "devDependencies": {
+    "@mapbox/shelf-pack": "^3.0.0",
     "@types/node": "^7.0.27",
+    "bin-pack": "^1.0.2",
     "typescript": "^2.3.4"
   },
   "author": "",

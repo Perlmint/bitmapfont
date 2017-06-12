@@ -36,6 +36,12 @@ public:
 	DECL_PROPERTY(Size);
 	DECL_PROPERTY(Family);
 	DECL_PROPERTY(Fill);
+	DECL_PROPERTY(StrokeColor);
+	DECL_PROPERTY(StrokeThickness);
+	DECL_PROPERTY(ShadowEnabled);
+	DECL_PROPERTY(ShadowColor);
+	DECL_PROPERTY(ShadowDistance);
+	DECL_PROPERTY(ShadowAngle);
 	DECL_METHOD(Draw);
 	DECL_METHOD(Glyph);
 #endif
@@ -46,21 +52,34 @@ public:
 
 	void setFamily(const std::string &fontName);
 
-	const std::string &family() const;
+	std::string family() const;
 
 	void setSize(double size);
 
 	double size() const;
 
 	void setStrokeThickness(double thickness);
-	double strokeThickness() const;
+	double getStrokeThickness() const;
 
-	void setStrokeColor();
+	void setStrokeColor(const std::string &color);
+	std::string getStrokeColor() const;
 
 	void setColor(const std::string &color);
 	std::string getColor() const;
 
 	bool strokeEnabled() const;
+
+	void setShadowEnable(bool enable);
+	bool getShadowEnabled() const;
+
+	void setShadowColor(const std::string &color);
+	std::string getShadowColor() const;
+
+	void setShadowAngle(double angle);
+	double getShadowAngle() const;
+
+	void setShadowDistance(double distance);
+	double getShadowDistance() const;
 
 	void draw(MagickWand *wand, const char ch[], double x, double y);
 	const Metrics *glyphSize(const char chId[]) const;
@@ -73,15 +92,25 @@ private:
 		if (_dummyWand == nullptr)
 		{
 			_dummyWand = NewMagickWand();
+			MagickReadImage(_dummyWand, "xc:");
 		}
 
 		return _dummyWand;
 	}
 
+	void setStroke(const std::string &color, double thickness) const;
+	void unsetStroke() const;
+
 	DrawingWand *wand;
-	std::string fontName;
 	struct {
-		uint8_t thickness;
+		double thickness;
+		std::string color;
 	} stroke;
+	struct {
+		bool enabled;
+		double angle;
+		double distance;
+		std::string color;
+	} shadow;
 	bool dirty = false;
 };

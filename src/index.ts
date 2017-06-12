@@ -4,6 +4,12 @@ const native: {
 } = require("../build/Release/bitmapfont.node");
 
 export interface GlyphInfo {
+    x1: number;
+    x2: number;
+    y1: number;
+    y2: number;
+    originX: number;
+    originY: number;
     width: number;
     height: number;
     ascender: number;
@@ -15,6 +21,13 @@ export interface IBitmapFont {
     family: string;
     size: number;
     fill: string;
+    strokeThickness: number;
+    strokeColor: string;
+
+    shadowEnabled: boolean;
+    shadowDistance: number;
+    shadowAngle: number;
+    shadowColor: string;
 
     draw(canvas: ICanvas, character: string, x: number, y: number): void;
     glyph(character: string): GlyphInfo;
