@@ -31,6 +31,7 @@ void BitmapFont::Init(Local<Object> exports) {
 	Nan::SetAccessor(ipl, String::NewFromUtf8(isolate, "size"), &BitmapFont::GetSize, &BitmapFont::SetSize);
 	Nan::SetAccessor(ipl, String::NewFromUtf8(isolate, "family"), &BitmapFont::GetFamily, &BitmapFont::SetFamily);
 	Nan::SetAccessor(ipl, String::NewFromUtf8(isolate, "fill"), &BitmapFont::GetFill, &BitmapFont::SetFill);
+	Nan::SetAccessor(ipl, String::NewFromUtf8(isolate, "weight"), &BitmapFont::GetWeight, &BitmapFont::SetWeight);
 	Nan::SetAccessor(ipl, String::NewFromUtf8(isolate, "strokeThickness"), &BitmapFont::GetStrokeThickness, &BitmapFont::SetStrokeThickness);
 	Nan::SetAccessor(ipl, String::NewFromUtf8(isolate, "strokeColor"), &BitmapFont::GetStrokeColor, &BitmapFont::SetStrokeColor);
 	Nan::SetAccessor(ipl, String::NewFromUtf8(isolate, "shadowEnabled"), &BitmapFont::GetShadowEnabled, &BitmapFont::SetShadowEnabled);
@@ -74,7 +75,17 @@ void BitmapFont::GetSize(v8::Local<v8::String> property, const Nan::PropertyCall
 
 void BitmapFont::SetSize(v8::Local<v8::String> property, v8::Local<v8::Value> value, const Nan::PropertyCallbackInfo<void>& info)
 {
-	Unwrap<BitmapFont>(info.Holder())->setSize(value.As<v8::Number>()->Int32Value());
+	Unwrap<BitmapFont>(info.Holder())->setSize(value.As<v8::Number>()->NumberValue());
+}
+
+void BitmapFont::GetWeight(v8::Local<v8::String> property, const Nan::PropertyCallbackInfo<v8::Value>& info)
+{
+	info.GetReturnValue().Set(Number::New(info.GetIsolate(), Unwrap<BitmapFont>(info.Holder())->getWeight()));
+}
+
+void BitmapFont::SetWeight(v8::Local<v8::String> property, v8::Local<v8::Value> value, const Nan::PropertyCallbackInfo<void>& info)
+{
+	Unwrap<BitmapFont>(info.Holder())->setWeight(value.As<v8::Number>()->Int32Value());
 }
 
 void BitmapFont::GetFamily(v8::Local<v8::String> property, const Nan::PropertyCallbackInfo<v8::Value>& info)
@@ -229,6 +240,7 @@ void BitmapFont::Glyph(const Nan::FunctionCallbackInfo<v8::Value>& info)
 BitmapFont::BitmapFont()
 	: wand(NewDrawingWand())
 	, stroke{ 0 }
+	, shadow{ false, 0, 0 }
 {
 	DrawSetFillOpacity(wand, 1.0);
 	DrawSetStrokeAntialias(wand, MagickTrue);
@@ -247,6 +259,16 @@ void BitmapFont::setFamily(const std::string &fontName)
 std::string BitmapFont::family() const
 {
 	return DrawGetFontFamily(wand);
+}
+
+void BitmapFont::setWeight(uint32_t weight)
+{
+	DrawSetFontWeight(wand, weight);
+}
+
+uint32_t BitmapFont::getWeight() const
+{
+	return DrawGetFontWeight(wand);
 }
 
 void BitmapFont::setSize(double size)
@@ -320,8 +342,9 @@ void BitmapFont::unsetStroke() const
 
 void BitmapFont::setShadowEnable(bool enable)
 {
-
+	shadow.enabled = enable;
 }
+
 bool BitmapFont::getShadowEnabled() const
 {
 	return shadow.enabled;

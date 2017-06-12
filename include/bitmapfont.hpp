@@ -42,6 +42,7 @@ public:
 	DECL_PROPERTY(ShadowColor);
 	DECL_PROPERTY(ShadowDistance);
 	DECL_PROPERTY(ShadowAngle);
+	DECL_PROPERTY(Weight);
 	DECL_METHOD(Draw);
 	DECL_METHOD(Glyph);
 #endif
@@ -85,6 +86,9 @@ public:
 	const Metrics *glyphSize(const char chId[]) const;
 
 	bool isDirty() const { return dirty; }
+
+	void setWeight(uint32_t weight);
+	uint32_t getWeight() const;
 
 private:
 	static MagickWand *_dummyWand;

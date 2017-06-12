@@ -21,6 +21,7 @@ export interface IBitmapFont {
     family: string;
     size: number;
     fill: string;
+    weight: number;
     strokeThickness: number;
     strokeColor: string;
 
