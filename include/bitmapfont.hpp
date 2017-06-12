@@ -24,6 +24,14 @@ struct Metrics
 
 v8::Local<v8::Object> ToCharacterMetrics(v8::Isolate *isolate, const Metrics& metrics);
 
+enum class FontStyle
+{
+	Undefined = 0,
+	Normal = 1,
+	Italic = 2,
+	Oblique = 3
+};
+
 DECL_CLASS(BitmapFont)
 {
 #if NODE
@@ -42,6 +50,7 @@ public:
 	DECL_PROPERTY(ShadowColor);
 	DECL_PROPERTY(ShadowDistance);
 	DECL_PROPERTY(ShadowAngle);
+	DECL_PROPERTY(Style);
 	DECL_PROPERTY(Weight);
 	DECL_METHOD(Draw);
 	DECL_METHOD(Glyph);
@@ -58,6 +67,9 @@ public:
 	void setSize(double size);
 
 	double size() const;
+
+	void setFontStyle(FontStyle style);
+	FontStyle getFontStyle() const;
 
 	void setStrokeThickness(double thickness);
 	double getStrokeThickness() const;

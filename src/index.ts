@@ -14,6 +14,7 @@ export interface GlyphInfo {
     height: number;
     ascender: number;
     descender: number;
+    advance: number;
 }
 
 export type BitmapConstructor = new () => IBitmapFont;
@@ -24,6 +25,7 @@ export interface IBitmapFont {
     weight: number;
     strokeThickness: number;
     strokeColor: string;
+    style: Style;
 
     shadowEnabled: boolean;
     shadowDistance: number;
@@ -38,6 +40,13 @@ export enum ImageFormat {
     PNG = 0,
     JPEG = 1,
     GIF = 2
+}
+
+export enum Style {
+    unset = 0,
+    normal = 1,
+    italic = 2,
+    oblique = 3
 }
 
 export type CanvasConstructor = new(width: number, height: number) => ICanvas;

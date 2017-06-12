@@ -32,6 +32,7 @@ void BitmapFont::Init(Local<Object> exports) {
 	Nan::SetAccessor(ipl, String::NewFromUtf8(isolate, "family"), &BitmapFont::GetFamily, &BitmapFont::SetFamily);
 	Nan::SetAccessor(ipl, String::NewFromUtf8(isolate, "fill"), &BitmapFont::GetFill, &BitmapFont::SetFill);
 	Nan::SetAccessor(ipl, String::NewFromUtf8(isolate, "weight"), &BitmapFont::GetWeight, &BitmapFont::SetWeight);
+	Nan::SetAccessor(ipl, String::NewFromUtf8(isolate, "style"), &BitmapFont::GetStyle, &BitmapFont::SetStyle);
 	Nan::SetAccessor(ipl, String::NewFromUtf8(isolate, "strokeThickness"), &BitmapFont::GetStrokeThickness, &BitmapFont::SetStrokeThickness);
 	Nan::SetAccessor(ipl, String::NewFromUtf8(isolate, "strokeColor"), &BitmapFont::GetStrokeColor, &BitmapFont::SetStrokeColor);
 	Nan::SetAccessor(ipl, String::NewFromUtf8(isolate, "shadowEnabled"), &BitmapFont::GetShadowEnabled, &BitmapFont::SetShadowEnabled);
@@ -86,6 +87,16 @@ void BitmapFont::GetWeight(v8::Local<v8::String> property, const Nan::PropertyCa
 void BitmapFont::SetWeight(v8::Local<v8::String> property, v8::Local<v8::Value> value, const Nan::PropertyCallbackInfo<void>& info)
 {
 	Unwrap<BitmapFont>(info.Holder())->setWeight(value.As<v8::Number>()->Int32Value());
+}
+
+void BitmapFont::GetStyle(v8::Local<v8::String> property, const Nan::PropertyCallbackInfo<v8::Value>& info)
+{
+	info.GetReturnValue().Set(Number::New(info.GetIsolate(), static_cast<uint32_t>(Unwrap<BitmapFont>(info.Holder())->getFontStyle())));
+}
+
+void BitmapFont::SetStyle(v8::Local<v8::String> property, v8::Local<v8::Value> value, const Nan::PropertyCallbackInfo<void>& info)
+{
+	Unwrap<BitmapFont>(info.Holder())->setFontStyle(static_cast<FontStyle>(value.As<v8::Number>()->Int32Value()));
 }
 
 void BitmapFont::GetFamily(v8::Local<v8::String> property, const Nan::PropertyCallbackInfo<v8::Value>& info)
@@ -266,6 +277,16 @@ void BitmapFont::setWeight(uint32_t weight)
 	DrawSetFontWeight(wand, weight);
 }
 
+void BitmapFont::setFontStyle(FontStyle style)
+{
+	DrawSetFontStyle(wand, static_cast<StyleType>(style));
+}
+
+FontStyle BitmapFont::getFontStyle() const
+{
+	return static_cast<FontStyle>(DrawGetFontStyle(wand));
+}
+
 uint32_t BitmapFont::getWeight() const
 {
 	return DrawGetFontWeight(wand);
@@ -442,6 +463,7 @@ v8::Local<v8::Object> ToCharacterMetrics(v8::Isolate *isolate, const Metrics& me
 	ret->Set(String::NewFromUtf8(isolate, "height"), v8::Number::New(isolate, metrics.textHeight));
 	ret->Set(String::NewFromUtf8(isolate, "ascender"), v8::Number::New(isolate, metrics.ascender));
 	ret->Set(String::NewFromUtf8(isolate, "descender"), v8::Number::New(isolate, metrics.descender));
+	ret->Set(String::NewFromUtf8(isolate, "advance"), v8::Number::New(isolate, metrics.maximumHoriontalAdvance));
 
 	return ret;
 }
